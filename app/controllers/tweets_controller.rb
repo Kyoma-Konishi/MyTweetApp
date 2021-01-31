@@ -5,6 +5,10 @@ class TweetsController < ApplicationController
   end
   
   def create
+    @tweet = Tweet.new(tweet_params)
+    @tweet.user_id = current_user.id
+    @tweet.save
+    redirect_to tweets_path
   end
 
   def index
@@ -13,5 +17,12 @@ class TweetsController < ApplicationController
 
   def show
     @tweets = Tweets.find(params[:id])
+    @user = @tweet.user
   end
+
+  private
+    def tweet_params
+      params.require(:tweet).permit(:body)
+    end
+
 end
